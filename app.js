@@ -21,23 +21,23 @@ gender.forEach(dir => {
                 const user = (JSON.parse(data));
 
                 if (dir === "boys" && (user.gender === "Female" || user.gender === "female")) {
-                    changeFile(`girls`);
+                    changeFile(`girls`, dir, file);
                 }
                 if (dir === "girls" && (user.gender === "Male" || user.gender === "male")) {
-                    changeFile(`boys`);
-                }
-
-                function changeFile(userGender) {
-                    fs.rename(path.join(defPath, dir, file),
-                        path.join(defPath, userGender, file),
-                        (err) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
+                    changeFile(`boys`, dir, file);
                 }
             });
         });
     });
 });
+
+function changeFile(userGender, dirPrevios, file) {
+    fs.rename(path.join(defPath, dirPrevios, file),
+        path.join(defPath, userGender, file),
+        (err) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+}
 
