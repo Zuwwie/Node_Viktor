@@ -1,7 +1,7 @@
-const fs = require(`fs`);
-const path = require(`path`);
+const fs = require('fs');
+const path = require('path');
 
-const defPath = path.join(__dirname, `dataBase`, `users.json`);
+const defPath = path.join(__dirname, '..', 'dataBase', 'users.json');
 
 const writeFile = (newArr) => {
     fs.writeFile(defPath, JSON.stringify(newArr), (err, data) => {
@@ -9,7 +9,7 @@ const writeFile = (newArr) => {
             console.log(err);
             return;
         }
-        console.log(`file written successfully`);
+        console.log('file written successfully');
     });
 };
 
@@ -25,7 +25,6 @@ const readFile = () => {
 
                 const users = JSON.parse(data);
 
-                console.log(users);
                 res(users);
             }
         );
@@ -33,39 +32,25 @@ const readFile = () => {
 };
 
 const createUser = async (newUser) => {
-
     const users = await readFile();
 
     newUser.id = users[users.length - 1].id + 1;
 
     users.push(newUser);
     writeFile(users);
-    return (users);
+    return users;
 };
 
 const deleteUser = async (user_id) => {
+    let users = await readFile();
 
-    const users = await readFile();
-
-    for (let i = 0; i < users.length; i++) {
-
-        const user = users[i];
-
-        if (user.id == user_id) {
-            users.splice(i, 1);
-            break;
-        }
-    }
-
-    console.log(users);
+    users = users.filter(user => user.id != user_id);
 
     writeFile(users);
-
     return users;
 };
 
 const getUserById = async (user_id) => {
-
     const users = await readFile();
     let userById;
 
@@ -78,8 +63,9 @@ const getUserById = async (user_id) => {
             break;
         }
     }
+
     return userById;
 };
 
-module.exports = {createUser, deleteUser, getUserById, readFile}
+module.exports = {createUser, deleteUser, getUserById, readFile};
 

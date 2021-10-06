@@ -1,4 +1,4 @@
-const userCreator = require(`../users.helper`);
+const userCreator = require('../helper/users.helper');
 
 module.exports = {
     getUsers: async (req, res) => {
@@ -6,14 +6,12 @@ module.exports = {
     },
 
     getUserById: async (req, res) => {
-
         const {user_id} = req.params;
 
         res.json(await userCreator.getUserById(user_id));
     },
 
     createUser: async (req, res) => {
-
         const newUser = req.body;
 
         res.json(await userCreator.createUser(newUser));
@@ -24,7 +22,6 @@ module.exports = {
     },
 
     deleteUser: async (req, res) => {
-
         const {user_id} = req.params;
 
         res.json(await userCreator.deleteUser(user_id));
