@@ -1,1 +1,22 @@
-[{"name":"Nazik","age":"222","id":28},{"name":"Olya","age":"11","id":29},{"name":"vika","age":"19","id":30},{"name":"Ostap","age":"19","id":32}]
+[
+  {
+    "name": "Nazik",
+    "age": "222",
+    "id": 28
+  },
+  {
+    "name": "Olya",
+    "age": "11",
+    "id": 29
+  },
+  {
+    "name": "vika",
+    "age": "19",
+    "id": 30
+  },
+  {
+    "name": "Ostap",
+    "age": "19",
+    "id": 31
+  }
+]

@@ -52,17 +52,8 @@ const deleteUser = async (user_id) => {
 
 const getUserById = async (user_id) => {
     const users = await readFile();
-    let userById;
 
-    for (let i = 0; i < users.length; i++) {
-
-        const user = users[i];
-
-        if (user_id == user.id) {
-            userById = users.splice(i, 1)[0];
-            break;
-        }
-    }
+    let userById = users.find(user => user.id == user_id);
 
     return userById;
 };
