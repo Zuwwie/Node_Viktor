@@ -9,11 +9,11 @@ const writeFile = (newArr) => {
             console.log(err);
             return;
         }
-        console.log(`file written successfully`)
+        console.log(`file written successfully`);
     });
 };
 
-readFile = () => {
+const readFile = () => {
     return new Promise((res, rej) => {
         fs.readFile(defPath,
             (err, data) => {
@@ -24,6 +24,7 @@ readFile = () => {
                 }
 
                 const users = JSON.parse(data);
+
                 console.log(users);
                 res(users);
             }
@@ -32,32 +33,17 @@ readFile = () => {
 };
 
 const createUser = async (newUser) => {
-    // fs.readFile(defPath, (err, data) => {
-    //     if (err) {
-    //         console.log(err);
-    //         return;
-    //     }
-    //
-    //     const users = (JSON.parse(data));
 
     const users = await readFile();
 
     newUser.id = users[users.length - 1].id + 1;
 
     users.push(newUser);
-
     writeFile(users);
-    // });
+    return (users);
 };
 
 const deleteUser = async (user_id) => {
-    // fs.readFile(defPath, (err, data) => {
-    //     if (err) {
-    //         console.log(err);
-    //         return;
-    //     }
-    //
-    //     const users = (JSON.parse(data));
 
     const users = await readFile();
 
@@ -70,11 +56,12 @@ const deleteUser = async (user_id) => {
             break;
         }
     }
+
     console.log(users);
 
     writeFile(users);
 
-    // });
+    return users;
 };
 
 const getUserById = async (user_id) => {
@@ -92,7 +79,7 @@ const getUserById = async (user_id) => {
         }
     }
     return userById;
-}
+};
 
-module.exports = {createUser, deleteUser, getUserById}
+module.exports = {createUser, deleteUser, getUserById, readFile}
 

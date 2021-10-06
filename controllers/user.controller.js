@@ -1,10 +1,8 @@
-const db = require(`../dataBase/users`);
-
 const userCreator = require(`../users.helper`);
 
 module.exports = {
-    getUsers: (req, res) => {
-        res.json(db);
+    getUsers: async (req, res) => {
+        res.json(await userCreator.readFile());
     },
 
     getUserById: async (req, res) => {
@@ -14,23 +12,21 @@ module.exports = {
         res.json(await userCreator.getUserById(user_id));
     },
 
-    createUser: (req, res) => {
+    createUser: async (req, res) => {
 
         const newUser = req.body;
 
-        userCreator.createUser(newUser);
-        res.json(db);
+        res.json(await userCreator.createUser(newUser));
     },
 
     updateUser: (req, res) => {
         res.json(`See Soon`);
     },
 
-    deleteUser: (req, res) => {
+    deleteUser: async (req, res) => {
 
         const {user_id} = req.params;
 
-        userCreator.deleteUser(user_id);
-        res.json(`Success done`);
+        res.json(await userCreator.deleteUser(user_id));
     }
 };
