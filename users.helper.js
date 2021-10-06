@@ -55,30 +55,5 @@ const deleteUser = (user_id) => {
     });
 };
 
-async function getUserById(user_id) {
-    let z;
-    await fs.readFile(defPath, (err, data) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        const users = (JSON.parse(data));
-
-        for (let i = 0; i < users.length; i++) {
-            const user = users[i];
-            if (user_id == user.id) {
-                z = users.splice(i, 1);
-                console.log(z[0])
-                z = z[0]
-                break;
-            }
-
-        }
-
-    });
-    return 0;
-}
-
-
-module.exports = {createUser, deleteUser, getUserById}
+module.exports = {createUser, deleteUser}
 

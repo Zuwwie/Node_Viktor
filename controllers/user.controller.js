@@ -4,21 +4,22 @@ const userCreator = require(`../users.helper`);
 
 module.exports = {
     getUsers: (req, res) => {
-        console.log(`get work`);
-
         res.json(db);
     },
+
     getUserById: (req, res) => {
 
         const {user_id} = req.params;
 
-        let user = userCreator.getUserById(user_id);
-        console.log(`_________________`)
-        console.log(user);
-        console.log(`_________________`)
-        user = db[user_id]
+        for (let i = 0; i < db.length; i++) {
 
-        res.json({user});
+            const user = db[i];
+
+            if (user_id == user.id) {
+                res.json(db.splice(i, 1)[0])
+                break;
+            }
+        }
     },
 
     createUser: (req, res) => {
@@ -26,7 +27,6 @@ module.exports = {
         const newUser = req.body;
 
         userCreator.createUser(newUser);
-
         res.json(db);
     },
 
@@ -39,17 +39,6 @@ module.exports = {
         const {user_id} = req.params;
 
         userCreator.deleteUser(user_id);
-
-        for (let i = 0; i < users.length; i++) {
-
-            const user = users[i];
-
-            if (user.id == user_id) {
-                users.splice(i, 1);
-                break;
-            }
-        }
-
-        res.json(db);
+        res.json(`Success done`);
     }
 };
