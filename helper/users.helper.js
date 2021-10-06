@@ -53,7 +53,7 @@ const deleteUser = async (user_id) => {
 const getUserById = async (user_id) => {
     const users = await readFile();
 
-    let userById = users.find(user => user.id == user_id);
+    const userById = users.find(user => user.id == user_id);
 
     return userById;
 };
