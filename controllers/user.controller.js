@@ -7,19 +7,11 @@ module.exports = {
         res.json(db);
     },
 
-    getUserById: (req, res) => {
+    getUserById: async (req, res) => {
 
         const {user_id} = req.params;
 
-        for (let i = 0; i < db.length; i++) {
-
-            const user = db[i];
-
-            if (user_id == user.id) {
-                res.json(db.splice(i, 1)[0])
-                break;
-            }
-        }
+        res.json(await userCreator.getUserById(user_id));
     },
 
     createUser: (req, res) => {
