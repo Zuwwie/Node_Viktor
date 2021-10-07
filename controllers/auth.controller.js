@@ -1,6 +1,6 @@
 const User = require('../dataBase/User');
 module.exports = {
-    adminLogin: async (req, res) => {
+    login: async (req, res) => {
         try {
             const {email, password} = req.body;
 
