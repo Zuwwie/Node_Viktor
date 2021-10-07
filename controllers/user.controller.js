@@ -1,5 +1,4 @@
 const User = require('../dataBase/User');
-// const {use} = require("express/lib/router");
 
 module.exports = {
     getUsers: async (req, res) => {
