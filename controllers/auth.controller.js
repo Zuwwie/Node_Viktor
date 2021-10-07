@@ -1,19 +1,8 @@
-const User = require('../dataBase/User');
 module.exports = {
-    login: async (req, res) => {
+    login: (req, res) => {
         try {
-            const {email, password} = req.body;
 
-            const user = await User.findOne({
-                email,
-                password,
-            });
-
-            if (!user) {
-                throw new Error('Some wrong!');
-            }
-
-            res.json(`Hi, ${user.name}`);
+            res.json('Hi, user');
         } catch (e) {
 
             res.json(e.message);
