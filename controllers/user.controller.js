@@ -1,34 +1,53 @@
-const userCreator = require('../helper/users.helper');
+const User = require('../dataBase/User');
+// const {use} = require("express/lib/router");
 
 module.exports = {
     getUsers: async (req, res) => {
-        const user = await userCreator.readFile();
+        try {
+            const users = await User.find();
 
-        res.json(user);
+            res.json(users);
+        } catch (e) {
+            res.json(e.message);
+        }
+
     },
 
     getUserById: async (req, res) => {
-        const {user_id} = req.params;
-        const user = await userCreator.getUserById(user_id);
+        try {
+            const {user_id} = req.params;
+            const user = await User.findById(user_id);
 
-        res.json(user);
+            res.json(user);
+        } catch (e) {
+            res.json(e.message);
+        }
     },
 
     createUser: async (req, res) => {
-        const newUser = req.body;
-        const user = await userCreator.createUser(newUser);
+        try {
+            const newUser = req.body;
+            const users = await User.create(newUser);
 
-        res.json(user);
-    },
-
-    updateUser: (req, res) => {
-        res.json(`See Soon`);
+            res.json(users);
+        } catch (e) {
+            res.json(e.message);
+        }
     },
 
     deleteUser: async (req, res) => {
-        const {user_id} = req.params;
-        const user = await userCreator.deleteUser(user_id);
+        try {
+            const {email} = req.params;
+            const deleted = await User.deleteOne({email});
 
-        res.json(user);
+            if (deleted.deletedCount === 0) {
+                throw new Error(`User by ${email} not found`);
+            }
+
+            res.json(`Deleted done`);
+        } catch (e) {
+            res.json(e.message);
+        }
+
     }
 };
