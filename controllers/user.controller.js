@@ -7,7 +7,6 @@ module.exports = {
 
             res.json(users);
         } catch (e) {
-
             res.json(e.message);
         }
 
@@ -20,7 +19,6 @@ module.exports = {
 
             res.json(user);
         } catch (e) {
-
             res.json(e.message);
         }
     },
@@ -32,7 +30,6 @@ module.exports = {
 
             res.json(users);
         } catch (e) {
-
             res.json(e.message);
         }
     },
@@ -42,13 +39,12 @@ module.exports = {
             const {email} = req.params;
             const deleted = await User.deleteOne({email});
 
-            if (deleted.deletedCount === 0) {
+            if (!deleted.deletedCount) {
                 throw new Error(`User by ${email} not found`);
             }
 
             res.json('Deleted done');
         } catch (e) {
-
             res.json(e.message);
         }
     }
