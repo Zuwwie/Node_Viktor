@@ -7,8 +7,13 @@ router.get('/', userController.getUsers);
 
 router.post(
     '/',
+    userMiddleware.userEmailSearch,
+    userController.updateUser);
+
+router.post(
+    '/',
     userMiddleware.isUserBodyValid,
-    userMiddleware.createUserMiddleware,
+    userMiddleware.userEmailSearch,
     userController.createUser);
 
 router.get(
@@ -16,6 +21,7 @@ router.get(
     userMiddleware.userIdValidationMiddleware,
     userMiddleware.userIdSearchMiddleware,
     userController.getUserById);
+
 
 router.delete('/:email', userController.deleteUser);
 

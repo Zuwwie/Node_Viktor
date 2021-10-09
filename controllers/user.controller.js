@@ -53,5 +53,21 @@ module.exports = {
         } catch (e) {
             res.json(e.message);
         }
+    },
+    updateUser: async (req, res) => {
+        try {
+            const {name} = req.body;
+            const {_id} = req.user;
+
+            const newUser = await User.updateOne({_id}, {$set: {name}});
+
+            if (!newUser.acknowledged) {
+                throw new Error('Something wrong!');
+            }
+
+            res.json('Update done!');
+        } catch (e) {
+            res.json(e.message);
+        }
     }
 };

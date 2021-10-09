@@ -2,14 +2,16 @@ const User = require('../dataBase/User');
 const userValidator = require('../validators/user.validator');
 
 module.exports = {
-    createUserMiddleware: async (req, res, next) => {
+    userEmailSearch: async (req, res, next) => {
         try {
-            const {email} = req.body;
+            const {email, name} = req.body;
             const userByEmail = await User.findOne({email});
 
-            if (userByEmail) {
+            if (userByEmail && !name) {
                 throw new Error('Email already exist');
             }
+
+            req.user = userByEmail;
 
             next();
         } catch (e) {
