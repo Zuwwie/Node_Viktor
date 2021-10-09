@@ -5,7 +5,7 @@ const authValidator = require('../validators/auth.validator');
 module.exports = {
     userAuthMiddleware: async (req, res, next) => {
         try {
-            const {email, password} = req.user;
+            const {email, password} = req.body;
 
             const user = await User.findOne({
                 email,
