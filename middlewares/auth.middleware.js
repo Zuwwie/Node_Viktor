@@ -29,9 +29,13 @@ module.exports = {
         try {
             const user = req.body;
 
-            const userValid = authValidator.authValidator.validate(user);
+            const {err, value} = authValidator.authValidator.validate(user);
 
-            res.user = userValid;
+            if (err) {
+                throw new Error(err.details[0].message);
+            }
+
+            req.body = value;
 
             next();
         } catch (e) {
