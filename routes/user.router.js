@@ -5,7 +5,11 @@ const userMiddleware = require('../middlewares/user.middleware');
 
 router.get('/', userController.getUsers);
 
-router.post('/', userMiddleware.createUserMiddleware, userController.createUser);
+router.post(
+    '/',
+    userMiddleware.isUserBodyValid,
+    userMiddleware.createUserMiddleware,
+    userController.createUser);
 
 router.get(
     '/:user_id',

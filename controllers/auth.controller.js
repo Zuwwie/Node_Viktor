@@ -1,7 +1,9 @@
 module.exports = {
     login: (req, res) => {
         try {
-            res.json('Hi, user');
+            const user = req.user;
+
+            res.json(`Hi, ${user.name}`);
         } catch (e) {
             res.json(e.message);
         }

@@ -1,4 +1,5 @@
 const User = require('../dataBase/User');
+const userValidator = require('../validators/user.validator');
 
 module.exports = {
     createUserMiddleware: async (req, res, next) => {
@@ -19,11 +20,13 @@ module.exports = {
     userIdSearchMiddleware: async (req, res, next) => {
         try {
             const {user_id} = req.params;
-            const userById = await User.findById(user_id);
+            const userById = await User.findById(user_id).lean();
 
             if (!userById) {
                 throw new Error('Id not found');
             }
+
+            req.user = userById;
 
             next();
         } catch (e) {
@@ -37,6 +40,23 @@ module.exports = {
             if (user_id.length !== 24) {
                 throw new Error('Wrong id validation!');
             }
+
+            next();
+        } catch (e) {
+            res.json(e.message);
+        }
+    },
+    isUserBodyValid: (req, res, next) => {
+        try {
+            const user = req.body;
+
+            const {err, value} = userValidator.createUserValidator.validate(user);
+
+            if (err) {
+                throw new Error(err.details[0].message);
+            }
+
+            req.body = value;
 
             next();
         } catch (e) {
