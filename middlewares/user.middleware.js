@@ -12,7 +12,6 @@ module.exports = {
             }
 
             req.user = userByEmail;
-
             next();
         } catch (e) {
             res.json(e.message);
@@ -29,12 +28,12 @@ module.exports = {
             }
 
             req.user = userById;
-
             next();
         } catch (e) {
             res.json(e.message);
         }
     },
+
     userIdValidationMiddleware: (req, res, next) => {
         try {
             const {user_id} = req.params;
@@ -46,12 +45,12 @@ module.exports = {
             }
 
             req.body = value;
-
             next();
         } catch (e) {
             res.json(e.message);
         }
     },
+
     isUserBodyValid: (req, res, next) => {
         try {
             const user = req.body;
@@ -63,12 +62,12 @@ module.exports = {
             }
 
             req.body = value;
-
             next();
         } catch (e) {
             res.json(e.message);
         }
     },
+
     isUserUpdateValid: (req, res, next) => {
         try {
             const user = req.body;

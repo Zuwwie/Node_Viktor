@@ -7,24 +7,21 @@ module.exports = {
         try {
             const {email, password} = req.body;
 
-            const user = await User.findOne({
-                email,
-            }).lean();
+            const user = await User.findOne({email}).lean();
 
             if (!user) {
                 throw new Error('Wrong email or password');
-
             }
 
             await passwordService.compare(password, user.password);
 
             req.user = user;
-
             next();
         } catch (e) {
             res.json(e.message);
         }
     },
+
     userAuthValidMiddleware: (req, res, next) => {
         try {
             const user = req.body;
@@ -36,7 +33,6 @@ module.exports = {
             }
 
             req.body = value;
-
             next();
         } catch (e) {
             res.json(e.message);
