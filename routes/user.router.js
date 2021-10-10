@@ -24,7 +24,6 @@ router.get(
     userMiddleware.userIdSearchMiddleware,
     userController.getUserById);
 
-
 router.delete(
     '/:user_id',
     userMiddleware.userIdValidationMiddleware,
