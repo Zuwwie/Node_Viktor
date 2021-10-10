@@ -7,14 +7,14 @@ router.get('/', userController.getUsers);
 
 router.post(
     '/',
-    userMiddleware.userEmailSearch,
-    userController.updateUser);
-
-router.post(
-    '/',
     userMiddleware.isUserBodyValid,
     userMiddleware.userEmailSearch,
     userController.createUser);
+
+router.post(
+    '/update',
+    userMiddleware.userEmailSearch,
+    userController.updateUser);
 
 router.get(
     '/:user_id',
