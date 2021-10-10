@@ -34,7 +34,7 @@ module.exports = {
 
             const user = await User.create({...newUser, password: hashedPassword});
 
-            user.password = '';
+            user.password = undefined;
 
             res.json(user);
         } catch (e) {
