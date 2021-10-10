@@ -12,8 +12,10 @@ router.post(
     userController.createUser);
 
 router.post(
-    '/update',
-    userMiddleware.userEmailSearch,
+    '/:user_id',
+    userMiddleware.userIdValidationMiddleware,
+    userMiddleware.isUserUpdateValid,
+    userMiddleware.userIdSearchMiddleware,
     userController.updateUser);
 
 router.get(
@@ -23,6 +25,10 @@ router.get(
     userController.getUserById);
 
 
-router.delete('/:email', userController.deleteUser);
+router.delete(
+    '/:user_id',
+    userMiddleware.userIdValidationMiddleware,
+    userMiddleware.userIdSearchMiddleware,
+    userController.deleteUser);
 
 module.exports = router;

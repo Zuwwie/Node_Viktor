@@ -7,7 +7,7 @@ const createUserValidator = Joi.object({
     name: Joi
         .string()
         .alphanum()
-        .min(2)
+        .min(3)
         .max(30)
         .trim()
         .required(),
@@ -26,4 +26,22 @@ const createUserValidator = Joi.object({
         .required()
 });
 
-module.exports = {createUserValidator};
+const updateUserValidator = Joi.object({
+    name: Joi
+        .string()
+        .required()
+        .alphanum()
+        .min(3)
+        .max(20)
+        .trim()
+});
+
+const isUserIdValid = Joi.object({
+    _id: Joi
+        .string()
+        .required()
+        .trim()
+        .length(24)
+});
+
+module.exports = {createUserValidator, updateUserValidator, isUserIdValid};

@@ -29,10 +29,10 @@ module.exports = {
         try {
             const user = req.body;
 
-            const {err, value} = authValidator.authValidator.validate(user);
+            const {error, value} = authValidator.authValidator.validate(user);
 
-            if (err) {
-                throw new Error(err.details[0].message);
+            if (error) {
+                throw new Error(error.details[0].message);
             }
 
             req.body = value;

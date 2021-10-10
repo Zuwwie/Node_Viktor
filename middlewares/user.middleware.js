@@ -4,10 +4,10 @@ const userValidator = require('../validators/user.validator');
 module.exports = {
     userEmailSearch: async (req, res, next) => {
         try {
-            const {email, name} = req.body;
+            const {email} = req.body;
             const userByEmail = await User.findOne({email});
 
-            if (userByEmail && !name) {
+            if (userByEmail) {
                 throw new Error('Email already exist');
             }
 
@@ -39,9 +39,13 @@ module.exports = {
         try {
             const {user_id} = req.params;
 
-            if (user_id.length !== 24) {
-                throw new Error('Wrong id validation!');
+            const {error, value} = userValidator.isUserIdValid.validate({_id: user_id});
+
+            if (error) {
+                throw new Error('Wrong id validation!' + error.details[0].message);
             }
+
+            req.body = value;
 
             next();
         } catch (e) {
@@ -52,10 +56,27 @@ module.exports = {
         try {
             const user = req.body;
 
-            const {err, value} = userValidator.createUserValidator.validate(user);
+            const {error, value} = userValidator.createUserValidator.validate(user);
 
-            if (err) {
-                throw new Error(err.details[0].message);
+            if (error) {
+                throw new Error(error.details[0].message);
+            }
+
+            req.body = value;
+
+            next();
+        } catch (e) {
+            res.json(e.message);
+        }
+    },
+    isUserUpdateValid: (req, res, next) => {
+        try {
+            const user = req.body;
+
+            const {error, value} = userValidator.updateUserValidator.validate(user);
+
+            if (error) {
+                throw new Error(error.details[0].message);
             }
 
             req.body = value;

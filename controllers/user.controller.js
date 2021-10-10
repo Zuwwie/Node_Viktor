@@ -5,7 +5,8 @@ const userUtil = require('../util/user.util');
 module.exports = {
     getUsers: async (req, res) => {
         try {
-            const users = await User.find();
+            const users = await User.find().lean();
+            users.forEach(user => userUtil.userNormalizator(user));
 
             res.json(users);
         } catch (e) {
@@ -44,11 +45,11 @@ module.exports = {
 
     deleteUser: async (req, res) => {
         try {
-            const {email} = req.params;
-            const deleted = await User.deleteOne({email});
+            const {_id} = req.user;
+            const deleted = await User.deleteOne({_id});
 
             if (!deleted.deletedCount) {
-                throw new Error(`User by ${email} not found`);
+                throw new Error(`User by ${_id} not found`);
             }
 
             res.json('Deleted done');
