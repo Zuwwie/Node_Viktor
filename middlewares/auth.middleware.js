@@ -1,4 +1,4 @@
-const authValidator = require('../validators/auth.validator');
+const {authValidator} = require('../validators/');
 const ErrorHandler = require("../errors/ErrorHandler");
 const passwordService = require('../service/password.service');
 const User = require('../dataBase/User');

@@ -29,7 +29,7 @@ const createUserValidator = Joi.object({
 const updateUserValidator = Joi.object({
     name: Joi
         .string()
-        .required()
+        // .required()
         .alphanum()
         .min(3)
         .max(20)

@@ -1,5 +1,5 @@
 const User = require('../dataBase/User');
-const userValidator = require('../validators/user.validator');
+const {userValidator} = require('../validators/');
 
 module.exports = {
     userEmailSearch: async (req, res, next) => {
@@ -44,7 +44,7 @@ module.exports = {
                 throw new Error('Wrong id validation!' + error.details[0].message);
             }
 
-            req.body = value;
+            req.params.user_id = value;
             next();
         } catch (e) {
             next(e);
