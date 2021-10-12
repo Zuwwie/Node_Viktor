@@ -14,7 +14,7 @@ module.exports = {
             req.user = userByEmail;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -30,7 +30,7 @@ module.exports = {
             req.user = userById;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -47,7 +47,7 @@ module.exports = {
             req.body = value;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -64,7 +64,7 @@ module.exports = {
             req.body = value;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -82,7 +82,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };

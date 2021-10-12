@@ -1,3 +1,5 @@
+const ErrorHandler = require("../errors/ErrorHandler");
+
 module.exports = {
     login: (req, res) => {
         try {
@@ -5,7 +7,7 @@ module.exports = {
 
             res.json(`Hi, ${user.name}`);
         } catch (e) {
-            res.json(e.message);
+            throw new ErrorHandler(e.message, 400);
         }
     }
 };

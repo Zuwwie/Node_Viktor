@@ -1,9 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
 const {MONGO_CONNECT_URL, PORT} = require('./configs/config');
-const userRouter = require('./routes/user.router');
-const authRouter = require('./routes/auth.router');
+const {userRouter, authRouter} = require('./routes');
 
 const app = express();
 
@@ -14,6 +15,12 @@ app.use(express.urlencoded({extended: true}));
 
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
+// eslint-disable-next-line no-unused-vars
+app.use('*', (error, req, res, next) => {
+    res
+        .status(error.status || 500)
+        .json({message: error.message});
+});
 
 app.listen(PORT, () => {
     console.log(`Im here = ${PORT}`);

@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const {EMAIL_REGEXP, PASSWORD_REGEXP} = require("../configs/regExp");
+const {EMAIL_REGEXP} = require("../configs/regExp");
 
 module.exports = {
     authValidator: Joi.object({
@@ -12,7 +12,7 @@ module.exports = {
             .trim(),
         password: Joi
             .string()
-            .regex(PASSWORD_REGEXP)
+            // .regex(PASSWORD_REGEXP)
             .required()
     })
 };

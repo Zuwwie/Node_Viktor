@@ -1,21 +1,22 @@
-const User = require('../dataBase/User');
+const ErrorHandler = require("../errors/ErrorHandler");
 const passwordService = require('../service/password.service');
+const User = require('../dataBase/User');
 const userUtil = require('../util/user.util');
 
 module.exports = {
-    getUsers: async (req, res) => {
+    getUsers: async (req, res, next) => {
         try {
             const users = await User.find().lean();
             users.forEach(user => userUtil.userNormalizator(user));
 
             res.json(users);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
 
     },
 
-    getUserById: (req, res) => {
+    getUserById: (req, res, next) => {
         try {
             const user = req.user;
 
@@ -23,11 +24,11 @@ module.exports = {
 
             res.json(utilUser);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
-    createUser: async (req, res) => {
+    createUser: async (req, res, next) => {
         try {
             const newUser = req.body;
 
@@ -35,29 +36,30 @@ module.exports = {
 
             const user = await User.create({...newUser, password: hashedPassword});
 
-            user.password = undefined;
+            const utilUser = userUtil.userNormalizator(user.toObject());
 
-            res.json(user);
+            res.json(utilUser);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
-    deleteUser: async (req, res) => {
+    deleteUser: async (req, res, next) => {
         try {
             const {_id} = req.user;
             const deleted = await User.deleteOne({_id});
 
             if (!deleted.deletedCount) {
-                throw new Error(`User by ${_id} not found`);
+                throw new ErrorHandler(`User by ${_id} not found`, 400);
             }
 
             res.json('Deleted done');
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
-    updateUser: async (req, res) => {
+
+    updateUser: async (req, res, next) => {
         try {
             const {name} = req.body;
             const {_id} = req.user;
@@ -65,12 +67,12 @@ module.exports = {
             const newUser = await User.updateOne({_id}, {$set: {name}});
 
             if (!newUser.acknowledged) {
-                throw new Error('Something wrong!');
+                throw new ErrorHandler('Something wrong!', 400);
             }
 
             res.json('Update done!');
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };

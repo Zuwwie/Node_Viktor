@@ -1,6 +1,7 @@
-const User = require('../dataBase/User');
-const passwordService = require('../service/password.service');
 const authValidator = require('../validators/auth.validator');
+const ErrorHandler = require("../errors/ErrorHandler");
+const passwordService = require('../service/password.service');
+const User = require('../dataBase/User');
 
 module.exports = {
     userAuthMiddleware: async (req, res, next) => {
@@ -10,7 +11,7 @@ module.exports = {
             const user = await User.findOne({email}).lean();
 
             if (!user) {
-                throw new Error('Wrong email or password');
+                throw new ErrorHandler('Wrong email or password', 404);
             }
 
             await passwordService.compare(password, user.password);
@@ -18,7 +19,7 @@ module.exports = {
             req.user = user;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -35,7 +36,7 @@ module.exports = {
             req.body = value;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };
