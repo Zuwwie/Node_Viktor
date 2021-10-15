@@ -1,5 +1,6 @@
 const User = require('../dataBase/User');
 const {userValidator} = require('../validators/');
+const ErrorHandler = require("../errors/ErrorHandler");
 
 module.exports = {
     userEmailSearch: async (req, res, next) => {
@@ -8,7 +9,7 @@ module.exports = {
             const userByEmail = await User.findOne({email});
 
             if (userByEmail) {
-                throw new Error('Email already exist');
+                throw new ErrorHandler('Email already exist', 404);
             }
 
             req.user = userByEmail;
@@ -24,7 +25,7 @@ module.exports = {
             const userById = await User.findById(user_id).lean();
 
             if (!userById) {
-                throw new Error('Id not found');
+                throw new ErrorHandler('Id not found', 404);
             }
 
             req.user = userById;
@@ -41,7 +42,7 @@ module.exports = {
             const {error, value} = userValidator.isUserIdValid.validate({_id: user_id});
 
             if (error) {
-                throw new Error('Wrong id validation!' + error.details[0].message);
+                throw new ErrorHandler('Wrong id validation!' + error.details[0].message, 404);
             }
 
             req.params.user_id = value;
@@ -58,7 +59,7 @@ module.exports = {
             const {error, value} = userValidator.createUserValidator.validate(user);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(error.details[0].message, 404);
             }
 
             req.body = value;
@@ -75,7 +76,7 @@ module.exports = {
             const {error, value} = userValidator.updateUserValidator.validate(user);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(error.details[0].message, 404);
             }
 
             req.body = value;

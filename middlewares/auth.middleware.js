@@ -30,7 +30,7 @@ module.exports = {
             const {error, value} = authValidator.authValidator.validate(user);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(error.details[0].message, 404);
             }
 
             req.body = value;
