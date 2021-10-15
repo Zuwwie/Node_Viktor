@@ -1,7 +1,8 @@
-const ErrorHandler = require("../errors/ErrorHandler");
+const ErrorHandler = require('../errors/ErrorHandler');
 const passwordService = require('../service/password.service');
 const User = require('../dataBase/User');
 const userUtil = require('../util/user.util');
+const {errorsEnumCode, errorsEnumMessage} = require('../errors');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -50,7 +51,7 @@ module.exports = {
             const deleted = await User.deleteOne({_id});
 
             if (!deleted.deletedCount) {
-                throw new ErrorHandler(`User by ${_id} not found`, 400);
+                throw new ErrorHandler(errorsEnumMessage.WRONG_ID, errorsEnumCode.NOT_FOUND);
             }
 
             res.json('Deleted done');
@@ -67,7 +68,7 @@ module.exports = {
             const newUser = await User.updateOne({_id}, {$set: {name}});
 
             if (!newUser.acknowledged) {
-                throw new ErrorHandler('Something wrong!', 400);
+                throw new ErrorHandler(errorsEnumMessage.WRONG_SOMETHING, errorsEnumCode.NOT_FOUND);
             }
 
             res.json('Update done!');

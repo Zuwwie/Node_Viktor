@@ -1,7 +1,9 @@
 const {authValidator} = require('../validators/');
-const ErrorHandler = require("../errors/ErrorHandler");
+const ErrorHandler = require('../errors/ErrorHandler');
 const passwordService = require('../service/password.service');
 const User = require('../dataBase/User');
+const {errorsEnumCode, errorsEnumMessage} = require('../errors');
+
 
 module.exports = {
     userAuthMiddleware: async (req, res, next) => {
@@ -11,7 +13,7 @@ module.exports = {
             const user = await User.findOne({email}).lean();
 
             if (!user) {
-                throw new ErrorHandler('Wrong email or password', 404);
+                throw new ErrorHandler(errorsEnumMessage.WRONG_EMAIL_OR_PASSWORD, errorsEnumCode.BAD_REQUEST);
             }
 
             await passwordService.compare(password, user.password);
@@ -30,7 +32,7 @@ module.exports = {
             const {error, value} = authValidator.authValidator.validate(user);
 
             if (error) {
-                throw new ErrorHandler(error.details[0].message, 404);
+                throw new ErrorHandler(errorsEnumMessage.WRONG_EMAIL_OR_PASSWORD, errorsEnumCode.NOT_FOUND);
             }
 
             req.body = value;
