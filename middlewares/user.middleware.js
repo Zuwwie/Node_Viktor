@@ -35,55 +35,97 @@ module.exports = {
         }
     },
 
-    userIdValidationMiddleware: (req, res, next) => {
+    isUserValid: (checkParameter = []) => (req, res, next) => {
         try {
-            const {user_id} = req.params;
+            if (checkParameter.includes('id')) {
+                const {user_id} = req.params;
 
-            const {error, value} = userValidator.isUserIdValid.validate({_id: user_id});
+                const {error, value} = userValidator.isUserIdValid.validate({_id: user_id});
 
-            if (error) {
-                throw new ErrorHandler('Wrong id validation!' + error.details[0].message, 404);
+                if (error) {
+                    throw new ErrorHandler('Wrong id validation!' + error.details[0].message, 404);
+                }
+
+                req.params.user_id = value;
+            }
+            if (checkParameter.includes('bodyValid')) {
+                const user = req.body;
+
+                const {error, value} = userValidator.createUserValidator.validate(user);
+
+                if (error) {
+                    throw new ErrorHandler(error.details[0].message, 404);
+                }
+
+                req.body = value;
+            }
+            if (checkParameter.includes('updateValid')) {
+                const user = req.body;
+
+                const {error, value} = userValidator.updateUserValidator.validate(user);
+
+                if (error) {
+                    throw new ErrorHandler(error.details[0].message, 404);
+                }
+
+                req.body = value;
             }
 
-            req.params.user_id = value;
             next();
         } catch (e) {
             next(e);
         }
     },
 
-    isUserBodyValid: (req, res, next) => {
-        try {
-            const user = req.body;
+    // userIdValidationMiddleware: (req, res, next) => {
+    //     try {
+    //         const {user_id} = req.params;
+    //
+    //         const {error, value} = userValidator.isUserIdValid.validate({_id: user_id});
+    //
+    //         if (error) {
+    //             throw new ErrorHandler('Wrong id validation!' + error.details[0].message, 404);
+    //         }
+    //
+    //         req.params.user_id = value;
+    //         next();
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // },
 
-            const {error, value} = userValidator.createUserValidator.validate(user);
+    // isUserBodyValid: (req, res, next) => {
+    //     try {
+    //         const user = req.body;
+    //
+    //         const {error, value} = userValidator.createUserValidator.validate(user);
+    //
+    //         if (error) {
+    //             throw new ErrorHandler(error.details[0].message, 404);
+    //         }
+    //
+    //         req.body = value;
+    //         next();
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // },
 
-            if (error) {
-                throw new ErrorHandler(error.details[0].message, 404);
-            }
-
-            req.body = value;
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    isUserUpdateValid: (req, res, next) => {
-        try {
-            const user = req.body;
-
-            const {error, value} = userValidator.updateUserValidator.validate(user);
-
-            if (error) {
-                throw new ErrorHandler(error.details[0].message, 404);
-            }
-
-            req.body = value;
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    }
+    // isUserUpdateValid: (req, res, next) => {
+    //     try {
+    //         const user = req.body;
+    //
+    //         const {error, value} = userValidator.updateUserValidator.validate(user);
+    //
+    //         if (error) {
+    //             throw new ErrorHandler(error.details[0].message, 404);
+    //         }
+    //
+    //         req.body = value;
+    //
+    //         next();
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // }
 };

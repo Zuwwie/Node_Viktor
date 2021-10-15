@@ -7,26 +7,33 @@ router.get('/', userController.getUsers);
 
 router.post(
     '/',
-    userMiddleware.isUserBodyValid,
+    userMiddleware.isUserValid(['bodyValid']),
+    // userMiddleware.isUserBodyValid,
     userMiddleware.userEmailSearch,
     userController.createUser);
 
 router.post(
     '/:user_id',
-    userMiddleware.userIdValidationMiddleware,
-    userMiddleware.isUserUpdateValid,
+    userMiddleware.isUserValid([
+        'id',
+        'updateValid'
+    ]),
+    // userMiddleware.userIdValidationMiddleware,
+    // userMiddleware.isUserUpdateValid,
     userMiddleware.userIdSearchMiddleware,
     userController.updateUser);
 
 router.get(
     '/:user_id',
-    userMiddleware.userIdValidationMiddleware,
+    userMiddleware.isUserValid(['id']),
+    // userMiddleware.userIdValidationMiddleware,
     userMiddleware.userIdSearchMiddleware,
     userController.getUserById);
 
 router.delete(
     '/:user_id',
-    userMiddleware.userIdValidationMiddleware,
+    userMiddleware.isUserValid(['id']),
+    // userMiddleware.userIdValidationMiddleware,
     userMiddleware.userIdSearchMiddleware,
     userController.deleteUser);
 
