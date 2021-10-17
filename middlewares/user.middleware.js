@@ -11,7 +11,7 @@ module.exports = {
             const userByEmail = await User.findOne({email});
 
             if (userByEmail) {
-                throw new ErrorHandler(errorsEnumMessage.EMAIL_EXIST,errorsEnumCode.NOT_ACCEPTABLE);
+                throw new ErrorHandler(errorsEnumMessage.EMAIL_EXIST, errorsEnumCode.NOT_ACCEPTABLE);
             }
 
             req.user = userByEmail;
@@ -130,4 +130,17 @@ module.exports = {
     //         next(e);
     //     }
     // }
+
+    validateDataDynamic: (destiny, dataIn) => (req, res, next) => {
+        console.log(destiny);
+        console.log(dataIn);
+
+        const {error} = userValidator[destiny].validate(req[dataIn]);
+
+        if (error) {
+            throw new ErrorHandler(error.details[0].message, errorsEnumCode.BAD_REQUEST);
+        }
+
+        next();
+    }
 };

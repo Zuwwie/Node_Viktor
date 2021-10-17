@@ -2,6 +2,7 @@ const {authValidator} = require('../validators/');
 const ErrorHandler = require('../errors/ErrorHandler');
 const passwordService = require('../service/password.service');
 const User = require('../dataBase/User');
+const {userNormalizator} = require('../util/user.util');
 const {errorsEnumCode, errorsEnumMessage} = require('../errors');
 
 
@@ -17,8 +18,8 @@ module.exports = {
             }
 
             await passwordService.compare(password, user.password);
-
-            req.user = user;
+            const normalizeUser = userNormalizator(user);
+            req.user = normalizeUser;
             next();
         } catch (e) {
             next(e);
