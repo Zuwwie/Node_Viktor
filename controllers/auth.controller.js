@@ -5,7 +5,6 @@ module.exports = {
     login: async (req, res, next) => {
         try {
             const user = req.user;
-            console.log(user);
 
             const tokenPair = jwtService.generateTokenPair();
 
@@ -17,6 +16,22 @@ module.exports = {
                 user,
                 ...tokenPair
             });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    logout: (req,res, next) => {
+        try {
+            res.json('Logout successfully');
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    logoutAllDevices: (req, res, next) => {
+        try{
+            res.json('Logout All Devices success');
         } catch (e) {
             next(e);
         }

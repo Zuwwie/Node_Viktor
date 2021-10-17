@@ -1,9 +1,12 @@
+const {AUTHORIZATION} = require('../configs/constants');
 const {authValidator} = require('../validators/');
 const ErrorHandler = require('../errors/ErrorHandler');
-const passwordService = require('../service/password.service');
+const {passwordService, jwtService} = require('../service/');
 const User = require('../dataBase/User');
-const {userNormalizator} = require('../util/user.util');
+const {userNormalizator, userTokenNormalizator} = require('../util/user.util');
 const {errorsEnumCode, errorsEnumMessage} = require('../errors');
+const {O_Auth} = require('../dataBase');
+const {REFRESH} = require('../configs/token-type.enum');
 
 
 module.exports = {
@@ -41,5 +44,95 @@ module.exports = {
         } catch (e) {
             next(e);
         }
-    }
+    },
+
+    checkAccessToken: async (req, res, next) => {
+        try {
+            const token = req.get(AUTHORIZATION);
+
+            if (!token) {
+                throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
+            }
+
+            await jwtService.verifyToken(token);
+
+            const tokenResponse = await O_Auth.findOne({access_token: token}).populate('user_id');
+
+            if (!tokenResponse) {
+                throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
+            }
+
+            const normalizeTokenResponse = userTokenNormalizator(tokenResponse.toObject());
+
+            req.user = normalizeTokenResponse.user_id;
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+    checkRefreshToken: async (req, res, next) => {
+        try {
+            const token = req.get(AUTHORIZATION);
+
+            if (!token) {
+                throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
+            }
+
+            await jwtService.verifyToken(token, REFRESH);
+
+            const tokenResponse = await O_Auth.findOne({refresh_token: token}).populate('user_id');
+
+            if (!tokenResponse) {
+                throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
+            }
+
+            await O_Auth.remove({refresh_token: token});
+
+            const normalizeTokenResponse = userTokenNormalizator(tokenResponse.toObject());
+
+            req.user = normalizeTokenResponse.user_id;
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    userLogoutMiddleware: async (req, res, next) => {
+        try {
+            const token = req.get(AUTHORIZATION);
+
+            if (!token) {
+                throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
+            }
+
+            await jwtService.verifyToken(token);
+
+            await O_Auth.deleteOne({access_token: token});
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    userLogoutAllMiddleware: async (req, res, next) => {
+        try {
+            const token = req.get(AUTHORIZATION);
+
+            if (!token) {
+                throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
+            }
+
+            await jwtService.verifyToken(token);
+
+            const userSingIn = await O_Auth.findOne({access_token: token}).populate('user_id');
+
+            await O_Auth.deleteMany({user_id: userSingIn.user_id._id});
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
 };

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const {userController} = require('../controllers');
-const {userMiddleware} = require('../middlewares');
+const {userMiddleware, authMiddleware} = require('../middlewares');
 
 router.get('/', userController.getUsers);
 
@@ -31,5 +31,10 @@ router.delete(
     userMiddleware.isUserValid(['id']),
     userMiddleware.userIdSearchMiddleware,
     userController.deleteUser);
+
+router.delete(
+    '/',
+    authMiddleware.checkAccessToken,
+    userController.deleteAccount);
 
 module.exports = router;
