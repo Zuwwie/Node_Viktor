@@ -10,7 +10,7 @@ router.post(
     authController.login
 );
 
-router.post('/refresh',authMiddleware.checkRefreshToken, authController.login);
+router.post('/refresh', authMiddleware.checkRefreshToken, authController.login);
 
 router.post('/logout', authMiddleware.userLogoutMiddleware, authController.logout);
 

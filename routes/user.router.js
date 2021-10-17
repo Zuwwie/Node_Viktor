@@ -7,28 +7,26 @@ router.get('/', userController.getUsers);
 
 router.post(
     '/',
-    userMiddleware.isUserValid(['bodyValid']),
+    userMiddleware.validateDataDynamic('createUserValidator'),
     userMiddleware.userEmailSearch,
     userController.createUser);
 
 router.put(
     '/:user_id',
-    userMiddleware.isUserValid([
-        'id',
-        'updateValid'
-    ]),
+    userMiddleware.userIdValidationMiddleware,
+    userMiddleware.validateDataDynamic('updateUserValidator'),
     userMiddleware.userIdSearchMiddleware,
     userController.updateUser);
 
 router.get(
     '/:user_id',
-    userMiddleware.isUserValid(['id']),
+    userMiddleware.userIdValidationMiddleware,
     userMiddleware.userIdSearchMiddleware,
     userController.getUserById);
 
 router.delete(
     '/:user_id',
-    userMiddleware.isUserValid(['id']),
+    userMiddleware.userIdValidationMiddleware,
     userMiddleware.userIdSearchMiddleware,
     userController.deleteUser);
 
