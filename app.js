@@ -33,4 +33,3 @@ cron.schedule('0 0 * * *', () => {
     tokenController.tokenDell();
 
 });
-
