@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const {ACCESS} = require('../configs/token-type.enum');
 const {userController} = require('../controllers');
 const {userMiddleware, authMiddleware} = require('../middlewares');
 
@@ -15,7 +16,7 @@ router.put(
     '/:user_id',
     userMiddleware.validateDataDynamic('isUserIdValid', 'params'),
     userMiddleware.validateDataDynamic('updateUserValidator'),
-    authMiddleware.checkAccessToken,
+    authMiddleware.checkToken(ACCESS),
     // userMiddleware.userIdSearchMiddleware, //
     userController.updateUser);
 
@@ -33,7 +34,7 @@ router.delete(
 
 router.delete(
     '/',
-    authMiddleware.checkAccessToken,
+    authMiddleware.checkToken(ACCESS),
     userController.deleteUser);
 
 module.exports = router;

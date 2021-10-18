@@ -3,6 +3,7 @@ const passwordService = require('../service/password.service');
 const User = require('../dataBase/User');
 const userUtil = require('../util/user.util');
 const {errorsEnumCode, errorsEnumMessage} = require('../errors');
+const {O_Auth} = require('../dataBase');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -47,8 +48,11 @@ module.exports = {
 
     deleteUser: async (req, res, next) => {
         try {
+            const token = req.token;
+
             const {_id} = req.user;
             const deleted = await User.deleteOne({_id});
+            await O_Auth.deleteOne({access_token: token});
 
             if (!deleted.deletedCount) {
                 throw new ErrorHandler(errorsEnumMessage.WRONG_ID, errorsEnumCode.NOT_FOUND);
