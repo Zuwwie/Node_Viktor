@@ -28,7 +28,7 @@ app.listen(PORT, () => {
 });
 
 const {tokenController} = require('./controllers/');
-cron.schedule('* * * */2 * *', () => {
+cron.schedule('0 0 * * *', () => {
     console.log('running a task');
     tokenController.tokenDell();
 
