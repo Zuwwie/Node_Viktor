@@ -8,7 +8,7 @@ module.exports = {
 
         return userNormalize;
     },
-    userTokenNormalizator : (userNormalize = {}) => {
+    userTokenNormalizator: (userNormalize = {}) => {
         const fieldsToRemove = ['password'];
 
         fieldsToRemove.forEach((field) => {

@@ -1,8 +1,7 @@
-const User = require('../dataBase/User');
+const {User} = require('../dataBase/');
 const {userValidator} = require('../validators/');
 const ErrorHandler = require('../errors/ErrorHandler');
 const {errorsEnumCode, errorsEnumMessage} = require('../errors');
-
 
 module.exports = {
     userEmailSearch: async (req, res, next) => {

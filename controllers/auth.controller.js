@@ -11,7 +11,6 @@ module.exports = {
             await O_Auth.create({
                 ...tokenPair, user_id: user._id
             });
-
             res.json({
                 user,
                 ...tokenPair
@@ -21,7 +20,7 @@ module.exports = {
         }
     },
 
-    logout: async (req,res, next) => {
+    logout: async (req, res, next) => {
         try {
             const token = req.token;
 
@@ -34,7 +33,7 @@ module.exports = {
     },
 
     logoutAllDevices: async (req, res, next) => {
-        try{
+        try {
             const userSingIn = req.user;
 
             await O_Auth.deleteMany({user_id: userSingIn._id});
