@@ -46,59 +46,6 @@ module.exports = {
         }
     },
 
-    // checkAccessToken: async (req, res, next) => {
-    //     try {
-    //         const token = req.get(AUTHORIZATION);
-    //
-    //         if (!token) {
-    //             throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
-    //         }
-    //
-    //         await jwtService.verifyToken(token);
-    //
-    //         const tokenResponse = await O_Auth.findOne({access_token: token}).populate('user_id');
-    //
-    //         if (!tokenResponse) {
-    //             throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
-    //         }
-    //
-    //         const normalizeTokenResponse = userTokenNormalizator(tokenResponse.toObject());
-    //
-    //         req.token = token;
-    //         req.user = normalizeTokenResponse.user_id;
-    //         next();
-    //     } catch (e) {
-    //         next(e);
-    //     }
-    // },
-
-    // checkRefreshToken: async (req, res, next) => {
-    //     try {
-    //         const token = req.get(AUTHORIZATION);
-    //
-    //         if (!token) {
-    //             throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
-    //         }
-    //
-    //         await jwtService.verifyToken(token, REFRESH);
-    //
-    //         const tokenResponse = await O_Auth.findOne({refresh_token: token}).populate('user_id');
-    //
-    //         if (!tokenResponse) {
-    //             throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
-    //         }
-    //
-    //         await O_Auth.remove({refresh_token: token});
-    //
-    //         const normalizeTokenResponse = userTokenNormalizator(tokenResponse.toObject());
-    //
-    //         req.user = normalizeTokenResponse.user_id;
-    //         next();
-    //     } catch (e) {
-    //         next(e);
-    //     }
-    // },
-
     checkToken: (token_type) => async (req, res, next) => {
         try {
             const token = req.get(AUTHORIZATION);
