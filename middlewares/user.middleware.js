@@ -11,7 +11,7 @@ module.exports = {
             const userByEmail = await User.findOne({email});
 
             if (userByEmail) {
-                throw new ErrorHandler(errorsEnumMessage.EMAIL_EXIST, errorsEnumCode.NOT_ACCEPTABLE);
+                throw new ErrorHandler(errorsEnumMessage.EMAIL_EXIST, errorsEnumCode.CONFLICT);
             }
 
             req.user = userByEmail;
@@ -37,23 +37,6 @@ module.exports = {
         }
     },
 
-    userIdValidationMiddleware: (req, res, next) => {
-        try {
-            const {user_id} = req.params;
-
-            const {error, value} = userValidator.isUserIdValid.validate({_id: user_id});
-
-            if (error) {
-                throw new ErrorHandler('Wrong id validation!' + error.details[0].message, errorsEnumCode.BAD_REQUEST);
-            }
-
-            req.params.user_id = value;
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
     validateDataDynamic: (destiny, dataIn = 'body') => (req, res, next) => {
 
         const {error, value} = userValidator[destiny].validate(req[dataIn]);
@@ -61,7 +44,7 @@ module.exports = {
         if (error) {
             throw new ErrorHandler(error.details[0].message, errorsEnumCode.BAD_REQUEST);
         }
-        req.body = value;
+        req[dataIn] = value;
 
         next();
     }

@@ -12,8 +12,8 @@ router.post(
 
 router.post('/refresh', authMiddleware.checkRefreshToken, authController.login);
 
-router.post('/logout', authMiddleware.userLogoutMiddleware, authController.logout);
+router.post('/logout', authMiddleware.checkAccessToken, authController.logout);
 
-router.post('/logoutAll', authMiddleware.userLogoutAllMiddleware, authController.logoutAllDevices);
+router.post('/logoutAll', authMiddleware.checkAccessToken, authController.logoutAllDevices);
 
 module.exports = router;

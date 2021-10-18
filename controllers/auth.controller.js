@@ -21,16 +21,24 @@ module.exports = {
         }
     },
 
-    logout: (req,res, next) => {
+    logout: async (req,res, next) => {
         try {
+            const token = req.token;
+
+            await O_Auth.deleteOne({access_token: token});
+
             res.json('Logout successfully');
         } catch (e) {
             next(e);
         }
     },
 
-    logoutAllDevices: (req, res, next) => {
+    logoutAllDevices: async (req, res, next) => {
         try{
+            const userSingIn = req.user;
+
+            await O_Auth.deleteMany({user_id: userSingIn._id});
+
             res.json('Logout All Devices success');
         } catch (e) {
             next(e);

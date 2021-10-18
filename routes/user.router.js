@@ -13,26 +13,27 @@ router.post(
 
 router.put(
     '/:user_id',
-    userMiddleware.userIdValidationMiddleware,
+    userMiddleware.validateDataDynamic('isUserIdValid', 'params'),
     userMiddleware.validateDataDynamic('updateUserValidator'),
-    userMiddleware.userIdSearchMiddleware,
+    authMiddleware.checkAccessToken,
+    // userMiddleware.userIdSearchMiddleware, //
     userController.updateUser);
 
 router.get(
     '/:user_id',
-    userMiddleware.userIdValidationMiddleware,
+    userMiddleware.validateDataDynamic('isUserIdValid', 'params'),
     userMiddleware.userIdSearchMiddleware,
     userController.getUserById);
 
 router.delete(
     '/:user_id',
-    userMiddleware.userIdValidationMiddleware,
+    userMiddleware.validateDataDynamic('isUserIdValid', 'params'),
     userMiddleware.userIdSearchMiddleware,
     userController.deleteUser);
 
 router.delete(
     '/',
     authMiddleware.checkAccessToken,
-    userController.deleteAccount);
+    userController.deleteUser);
 
 module.exports = router;

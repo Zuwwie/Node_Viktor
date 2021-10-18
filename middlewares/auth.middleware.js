@@ -36,7 +36,7 @@ module.exports = {
             const {error, value} = authValidator.authValidator.validate(user);
 
             if (error) {
-                throw new ErrorHandler(errorsEnumMessage.WRONG_EMAIL_OR_PASSWORD, errorsEnumCode.NOT_FOUND);
+                throw new ErrorHandler(errorsEnumMessage.WRONG_EMAIL_OR_PASSWORD, errorsEnumCode.BAD_REQUEST);
             }
 
             req.body = value;
@@ -64,12 +64,14 @@ module.exports = {
 
             const normalizeTokenResponse = userTokenNormalizator(tokenResponse.toObject());
 
+            req.token = token;
             req.user = normalizeTokenResponse.user_id;
             next();
         } catch (e) {
             next(e);
         }
     },
+
     checkRefreshToken: async (req, res, next) => {
         try {
             const token = req.get(AUTHORIZATION);
@@ -97,41 +99,4 @@ module.exports = {
         }
     },
 
-    userLogoutMiddleware: async (req, res, next) => {
-        try {
-            const token = req.get(AUTHORIZATION);
-
-            if (!token) {
-                throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
-            }
-
-            await jwtService.verifyToken(token);
-
-            await O_Auth.deleteOne({access_token: token});
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    userLogoutAllMiddleware: async (req, res, next) => {
-        try {
-            const token = req.get(AUTHORIZATION);
-
-            if (!token) {
-                throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
-            }
-
-            await jwtService.verifyToken(token);
-
-            const userSingIn = await O_Auth.findOne({access_token: token}).populate('user_id');
-
-            await O_Auth.deleteMany({user_id: userSingIn.user_id._id});
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
 };

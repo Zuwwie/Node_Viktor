@@ -37,7 +37,7 @@ const updateUserValidator = Joi.object({
 });
 
 const isUserIdValid = Joi.object({
-    _id: Joi
+    user_id: Joi
         .string()
         .required()
         .trim()
