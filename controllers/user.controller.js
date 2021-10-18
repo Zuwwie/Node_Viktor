@@ -77,14 +77,4 @@ module.exports = {
         }
     },
 
-    deleteAccount: (req, res, next) => {
-        try {
-            const user = req.user;
-
-            res.json(`${user.name} delete success`);
-
-        } catch (e) {
-            next(e);
-        }
-    }
 };
