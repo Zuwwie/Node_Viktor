@@ -1,18 +1,24 @@
-const { O_Auth } = require('../dataBase');
+const { O_Auth, O_Password } = require('../dataBase');
 
 module.exports = {
-    tokenDell: async () => {
+    tokenDell: () => {
         try {
             const nowDate = new Date().getDate();
-            const tokens = await O_Auth.find();
+            const dateBaseToClean = [
+                O_Auth,
+                O_Password
+            ];
+            dateBaseToClean.map(async ( dataBase ) => {
+                const tokens = await dataBase.find();
 
-            tokens.map(async ( token ) => {
-                const timestamp = token._id.getTimestamp();
-                const date = timestamp.getDate();
+                tokens.map(async ( token ) => {
+                    const timestamp = token._id.getTimestamp();
+                    const date = timestamp.getDate();
 
-                if ( nowDate - date > 1 ) {
-                    await O_Auth.deleteOne({ _id: token._id });
-                }
+                    if ( nowDate - date > 1 ) {
+                        await O_Auth.deleteOne({ _id: token._id });
+                    }
+                });
             });
 
         } catch (e) {
