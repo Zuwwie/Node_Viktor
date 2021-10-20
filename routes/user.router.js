@@ -9,7 +9,7 @@ router.get('/', userController.getUsers);
 router.post(
     '/',
     userMiddleware.validateDataDynamic('createUserValidator'),
-    userMiddleware.userEmailSearch,
+    userMiddleware.userEmailSearch(false),
     userController.createUser);
 
 router.put(

@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { authController } = require('../controllers/');
 const { authMiddleware } = require('../middlewares/');
 const { ACCESS, REFRESH, PASSWORD } = require('../configs/token-type.enum');
+const { userMiddleware } = require('../middlewares');
 
 router.post(
     '/login',
@@ -30,6 +31,12 @@ router.post(
     '/passwordchanger',
     authMiddleware.checkToken(ACCESS),
     authController.changePasswordSendMail);
+
+router.post(
+    '/passwordchangerMail',
+    userMiddleware.userEmailSearch(true),
+    authController.changePasswordSendMail
+);
 
 router.post(
     '/passwordchanger/:password_token',
