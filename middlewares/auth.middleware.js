@@ -8,7 +8,6 @@ const { O_Auth, User, O_Password } = require('../dataBase');
 const { REFRESH } = require('../configs/token-type.enum');
 const tokenTypeEnum = require('../configs/token-type.enum');
 
-
 module.exports = {
     userAuthMiddleware: async ( req, res, next ) => {
         try {

@@ -43,7 +43,7 @@ module.exports = {
 
             await emailService.sendMail(newUser.email, WELCOME, utilUser);
 
-            res.json(utilUser);
+            res.status(201).json(utilUser);
         } catch (e) {
             next(e);
         }
@@ -64,7 +64,7 @@ module.exports = {
 
             await emailService.sendMail(user.email, DELETE, user);
 
-            res.json('Deleted done');
+            res.status(204).json('Deleted done');
         } catch (e) {
             next(e);
         }
@@ -84,7 +84,7 @@ module.exports = {
 
             await emailService.sendMail(user.email, UPDATE, user);
 
-            res.json('Update done!');
+            res.status(201).json('Update done!');
         } catch (e) {
             next(e);
         }
