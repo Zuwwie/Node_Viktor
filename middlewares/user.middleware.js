@@ -4,13 +4,16 @@ const ErrorHandler = require('../errors/ErrorHandler');
 const { errorsEnumCode, errorsEnumMessage } = require('../errors');
 
 module.exports = {
-    userEmailSearch: ( need ) => async ( req, res, next ) => {
+    userEmailSearch: ( need = true ) => async ( req, res, next ) => {
         try {
             const { email } = req.body;
             const userByEmail = await User.findOne({ email });
 
             if ( userByEmail && !need ) {
                 throw new ErrorHandler(errorsEnumMessage.EMAIL_EXIST, errorsEnumCode.CONFLICT);
+            }
+            if(need && !userByEmail) {
+                throw new ErrorHandler(errorsEnumMessage.WRONG_EMAIL_OR_PASSWORD, errorsEnumCode.CONFLICT);
             }
 
             req.user = userByEmail;
