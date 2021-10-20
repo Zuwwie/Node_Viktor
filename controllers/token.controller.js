@@ -1,4 +1,4 @@
-const {O_Auth} = require('../dataBase');
+const { O_Auth } = require('../dataBase');
 
 module.exports = {
     tokenDell: async () => {
@@ -6,11 +6,12 @@ module.exports = {
             const nowDate = new Date().getDate();
             const tokens = await O_Auth.find();
 
-            tokens.map(async (token) => {
+            tokens.map(async ( token ) => {
                 const timestamp = token._id.getTimestamp();
                 const date = timestamp.getDate();
-                if (nowDate - date > 1) {
-                    await O_Auth.deleteOne({_id: token._id});
+
+                if ( nowDate - date > 1 ) {
+                    await O_Auth.deleteOne({ _id: token._id });
                 }
             });
 

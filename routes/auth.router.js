@@ -1,8 +1,8 @@
 const router = require('express').Router();
 
-const {authController} = require('../controllers/');
-const {authMiddleware} = require('../middlewares/');
-const {ACCESS, REFRESH} = require('../configs/token-type.enum');
+const { authController } = require('../controllers/');
+const { authMiddleware } = require('../middlewares/');
+const { ACCESS, REFRESH, PASSWORD } = require('../configs/token-type.enum');
 
 router.post(
     '/login',
@@ -13,7 +13,7 @@ router.post(
 
 router.post(
     '/refresh',
-    authMiddleware.checkToken(REFRESH),
+    authMiddleware.checkToken(REFRESH, REFRESH),
     authController.login);
 
 router.post(
@@ -25,5 +25,15 @@ router.post(
     '/logoutAll',
     authMiddleware.checkToken(ACCESS),
     authController.logoutAllDevices);
+
+router.post(
+    '/passwordchanger',
+    authMiddleware.checkToken(ACCESS),
+    authController.changePasswordSendMail);
+
+router.post(
+    '/passwordchanger/:password_token',
+    authMiddleware.checkToken(PASSWORD, PASSWORD),
+    authController.changeUserPassword);
 
 module.exports = router;

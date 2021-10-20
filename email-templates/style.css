@@ -1,0 +1,16 @@
+header {
+    background-color: aliceblue;
+}
+
+.dell {
+    border: red 1px solid;
+    background-color: beige;
+    padding: 20px;
+}
+
+.update {
+    border: cornflowerblue 2px solid;
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+}

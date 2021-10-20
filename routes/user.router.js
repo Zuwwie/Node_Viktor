@@ -1,8 +1,8 @@
 const router = require('express').Router();
 
-const {ACCESS} = require('../configs/token-type.enum');
-const {userController} = require('../controllers');
-const {userMiddleware, authMiddleware} = require('../middlewares');
+const { ACCESS } = require('../configs/token-type.enum');
+const { userController } = require('../controllers');
+const { userMiddleware, authMiddleware } = require('../middlewares');
 
 router.get('/', userController.getUsers);
 
@@ -17,7 +17,6 @@ router.put(
     userMiddleware.validateDataDynamic('isUserIdValid', 'params'),
     userMiddleware.validateDataDynamic('updateUserValidator'),
     authMiddleware.checkToken(ACCESS),
-    // userMiddleware.userIdSearchMiddleware, //
     userController.updateUser);
 
 router.get(

@@ -1,15 +1,15 @@
-const {User} = require('../dataBase/');
-const {userValidator} = require('../validators/');
+const { User } = require('../dataBase/');
+const { userValidator } = require('../validators/');
 const ErrorHandler = require('../errors/ErrorHandler');
-const {errorsEnumCode, errorsEnumMessage} = require('../errors');
+const { errorsEnumCode, errorsEnumMessage } = require('../errors');
 
 module.exports = {
-    userEmailSearch: async (req, res, next) => {
+    userEmailSearch: async ( req, res, next ) => {
         try {
-            const {email} = req.body;
-            const userByEmail = await User.findOne({email});
+            const { email } = req.body;
+            const userByEmail = await User.findOne({ email });
 
-            if (userByEmail) {
+            if ( userByEmail ) {
                 throw new ErrorHandler(errorsEnumMessage.EMAIL_EXIST, errorsEnumCode.CONFLICT);
             }
 
@@ -20,12 +20,12 @@ module.exports = {
         }
     },
 
-    userIdSearchMiddleware: async (req, res, next) => {
+    userIdSearchMiddleware: async ( req, res, next ) => {
         try {
-            const {user_id} = req.params;
+            const { user_id } = req.params;
             const userById = await User.findById(user_id).lean();
 
-            if (!userById) {
+            if ( !userById ) {
                 throw new ErrorHandler(errorsEnumMessage.WRONG_ID, errorsEnumCode.NOT_FOUND);
             }
 
@@ -36,11 +36,11 @@ module.exports = {
         }
     },
 
-    validateDataDynamic: (destiny, dataIn = 'body') => (req, res, next) => {
+    validateDataDynamic: ( destiny, dataIn = 'body' ) => ( req, res, next ) => {
 
-        const {error, value} = userValidator[destiny].validate(req[dataIn]);
+        const { error, value } = userValidator[destiny].validate(req[dataIn]);
 
-        if (error) {
+        if ( error ) {
             throw new ErrorHandler(error.details[0].message, errorsEnumCode.BAD_REQUEST);
         }
         req[dataIn] = value;

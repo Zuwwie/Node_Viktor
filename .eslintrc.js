@@ -10,11 +10,11 @@ module.exports = {
     rules: {
         'array-bracket-newline': [
             'error',
-            {minItems: 2}
+            { minItems: 2 }
         ],
         'array-element-newline': [
             'error',
-            {minItems: 2}
+            { minItems: 2 }
         ],
         'arrow-body-style': 'error',
         'block-scoped-var': 'error',
@@ -32,7 +32,7 @@ module.exports = {
         indent: [
             'warn',
             4,
-            {SwitchCase: 1}
+            { SwitchCase: 1 }
         ],
         'linebreak-style': 'off',
         'max-classes-per-file': 'off',
@@ -81,7 +81,7 @@ module.exports = {
         ],
         'no-magic-numbers': [
             'off',
-            {ignoreArrayIndexes: true}
+            { ignoreArrayIndexes: true }
         ],
         'no-multi-spaces': 'error',
         'no-multi-str': 'error',
@@ -105,11 +105,11 @@ module.exports = {
         'no-unused-expressions': 'error',
         'no-unused-vars': [
             'error',
-            {varsIgnorePattern: 'ctx'}
+            { varsIgnorePattern: 'ctx' }
         ],
         'no-use-before-define': [
             'error',
-            {functions: false}
+            { functions: false }
         ],
         'no-useless-call': 'error',
         'no-useless-concat': 'error',
