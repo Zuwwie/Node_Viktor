@@ -1,4 +1,9 @@
-MONGO_CONNECT_URL=mongodb://localhost:27017/{name}
+MONGO_CONNECT_URL=mongodb://localhost:27017/{DB_NAME}
 PORT=5000
+
 JWT_ACCESS_SECRET=secret_word
-JWT_REFRESH_SECRET=secret_word_2
+JWT_REFRESH_SECRET=secret_word_refresh
+JWT_PASSWORD_SECRET=secret_word_password
+
+NO_REPLY_EMAIL=xxx@gmail.com
+NO_REPLY_EMAIL_PASSWORD=12345
