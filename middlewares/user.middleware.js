@@ -12,7 +12,7 @@ module.exports = {
             if ( userByEmail && !need ) {
                 throw new ErrorHandler(errorsEnumMessage.EMAIL_EXIST, errorsEnumCode.CONFLICT);
             }
-            if(need && !userByEmail) {
+            if ( need && !userByEmail ) {
                 throw new ErrorHandler(errorsEnumMessage.WRONG_EMAIL_OR_PASSWORD, errorsEnumCode.CONFLICT);
             }
 
@@ -22,7 +22,6 @@ module.exports = {
             next(e);
         }
     },
-
 
     userIdSearchMiddleware: async ( req, res, next ) => {
         try {
