@@ -57,8 +57,11 @@ module.exports = {
                 case tokenTypeEnum.PASSWORD:
                     dataBaseToSearch = O_Password;
                     break;
-                default:
+                case tokenTypeEnum.REFRESH || tokenTypeEnum.ACCESS:
                     dataBaseToSearch = O_Auth;
+                    break;
+                default:
+                    throw new ErrorHandler(errorsEnumMessage.WRONG_SOMETHING, 500);
             }
             const tokenResponse = await dataBaseToSearch.findOne({ [token_type + '_token']: token }).populate(
                 'user_id');
