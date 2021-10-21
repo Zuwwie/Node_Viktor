@@ -5,7 +5,6 @@ const { passwordService, jwtService } = require('../service/');
 const { userNormalizator, userTokenNormalizator } = require('../util/user.util');
 const { errorsEnumCode, errorsEnumMessage } = require('../errors');
 const { O_Auth, User, O_Password } = require('../dataBase');
-const { REFRESH } = require('../configs/token-type.enum');
 const tokenTypeEnum = require('../configs/token-type.enum');
 
 module.exports = {
@@ -67,7 +66,7 @@ module.exports = {
             if ( !tokenResponse ) {
                 throw new ErrorHandler(errorsEnumMessage.INVALID_TOKEN, errorsEnumCode.UNAUTHORIZED);
             }
-            if ( token_type === REFRESH ) {
+            if ( token_type === tokenTypeEnum.REFRESH ) {
                 await O_Auth.deleteOne({ refresh_token: token });
             }
 
