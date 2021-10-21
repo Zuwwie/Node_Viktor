@@ -20,6 +20,7 @@ module.exports = {
 
             await passwordService.compare(password, user.password);
             const normalizeUser = userNormalizator(user);
+
             req.user = normalizeUser;
             next();
         } catch (e) {
