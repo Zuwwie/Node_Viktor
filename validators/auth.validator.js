@@ -14,5 +14,19 @@ module.exports = {
             .string()
             .regex(PASSWORD_REGEXP)
             .required()
+    }),
+    passwordValidator: Joi.object({
+        password: Joi
+            .string()
+            .regex(PASSWORD_REGEXP)
+            .required()
+    }),
+    emailValidator: Joi.object({
+        email: Joi
+            .string()
+            .regex(EMAIL_REGEXP)
+            .required()
+            .lowercase()
+            .trim(),
     })
 };

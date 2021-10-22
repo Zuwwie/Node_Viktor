@@ -27,8 +27,7 @@ module.exports = {
             next(e);
         }
     },
-
-    userAuthValidMiddleware: ( req, res, next ) => {
+    userLoginValidMiddleware: ( req, res, next ) => {
         try {
             const user = req.body;
 
@@ -36,6 +35,35 @@ module.exports = {
 
             if ( error ) {
                 throw new ErrorHandler(errorsEnumMessage.WRONG_EMAIL_OR_PASSWORD, errorsEnumCode.BAD_REQUEST);
+            }
+
+            req.body = value;
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    userAuthValidMiddleware: ( params ) => ( req, res, next ) => {
+        try {
+            const dateToValid = req.body;
+            let validator;
+
+            switch (params) {
+                case 'password':
+                    validator = 'passwordValidator';
+                    break;
+                case 'email':
+                    validator = 'emailValidator';
+                    break;
+                default:
+                    throw new ErrorHandler(errorsEnumMessage.WRONG_SOMETHING, 500);
+            }
+
+            const { error, value } = authValidator[validator].validate(dateToValid);
+
+            if ( error ) {
+                throw new ErrorHandler(errorsEnumMessage.WRONG_SOMETHING, errorsEnumCode.BAD_REQUEST);
             }
 
             req.body = value;

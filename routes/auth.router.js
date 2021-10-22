@@ -7,7 +7,7 @@ const { userMiddleware } = require('../middlewares');
 
 router.post(
     '/login',
-    authMiddleware.userAuthValidMiddleware,
+    authMiddleware.userLoginValidMiddleware,
     authMiddleware.userAuthMiddleware,
     authController.login
 );
@@ -34,12 +34,14 @@ router.post(
 
 router.post(
     '/passwordchangerMail',
+    authMiddleware.userAuthValidMiddleware('email'),
     userMiddleware.userEmailSearch(true),
     authController.changePasswordSendMail
 );
 
 router.post(
     '/passwordchanger/:password_token',
+    authMiddleware.userAuthValidMiddleware('password'),
     authMiddleware.checkToken(PASSWORD, PASSWORD),
     authController.changeUserPassword);
 
