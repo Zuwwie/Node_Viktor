@@ -27,6 +27,7 @@ module.exports = {
             next(e);
         }
     },
+
     userLoginValidMiddleware: ( req, res, next ) => {
         try {
             const user = req.body;
