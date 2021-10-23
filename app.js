@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const startCron = require('./cron');
 
 require('dotenv').config();
 
+const startCron = require('./cron');
 const { MONGO_CONNECT_URL, PORT } = require('./configs/config');
 const { userRouter, authRouter } = require('./routes');
 
