@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-// const cron = require('node-cron');
 const startCron = require('./cron');
 
 require('dotenv').config();
@@ -28,12 +27,3 @@ app.listen(PORT, () => {
     console.log(`Im here = ${PORT}`);
     startCron();
 });
-
-// const { tokenController } = require('./controllers/');
-// const cron = require('node-cron');
-// cron.schedule('*/10 * * * * *', () => {
-// cron.schedule('* * * * * *', () => {
-//     console.log('running a task');
-//     // tokenController.tokenDell();
-//
-// });
