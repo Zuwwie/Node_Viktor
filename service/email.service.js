@@ -5,6 +5,7 @@ const path = require('path');
 const { NO_REPLY_EMAIL_PASSWORD, NO_REPLY_EMAIL } = require('../configs/config');
 const allTemplates = require('../email-templates');
 const ErrorHandler = require('../errors/ErrorHandler');
+const { errorsEnumCode, errorsEnumMessage } = require('../errors/');
 
 const templateParser = new EmailTemplates({
     views: {
@@ -24,9 +25,9 @@ module.exports = {
     sendMail: async ( userMail, emailAction, context = {} ) => {
 
         const templateInfo = allTemplates[emailAction];
-        //todo dell under code to enum
+
         if ( !templateInfo ) {
-            throw new ErrorHandler('wrong template', 444);
+            throw new ErrorHandler(errorsEnumMessage.WRONG_TEMPLATE, errorsEnumCode.NO_RESPONSE);
         }
 
         const html = await templateParser.render(templateInfo.templateName, context);

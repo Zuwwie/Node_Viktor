@@ -4,6 +4,7 @@ const { authController } = require('../controllers/');
 const { authMiddleware } = require('../middlewares/');
 const { ACCESS, REFRESH, PASSWORD } = require('../configs/token-type.enum');
 const { userMiddleware } = require('../middlewares');
+const { authValidator } = require('../validators/');
 
 router.post(
     '/login',
@@ -34,14 +35,14 @@ router.post(
 
 router.put(
     '/passwordchangerMail',
-    authMiddleware.userAuthValidMiddleware('email'),
+    userMiddleware.validateDataDynamic('emailValidator', authValidator),
     userMiddleware.userEmailSearch(true),
     authController.changePasswordSendMail
 );
 
 router.put(
     '/passwordchanger/:password_token',
-    authMiddleware.userAuthValidMiddleware('password'),
+    userMiddleware.validateDataDynamic('passwordValidator', authValidator),
     authMiddleware.checkToken(PASSWORD, PASSWORD),
     authController.changeUserPassword);
 

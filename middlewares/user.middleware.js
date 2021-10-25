@@ -1,5 +1,4 @@
 const { User } = require('../dataBase/');
-const { userValidator } = require('../validators/');
 const ErrorHandler = require('../errors/ErrorHandler');
 const { errorsEnumCode, errorsEnumMessage } = require('../errors');
 
@@ -39,9 +38,9 @@ module.exports = {
         }
     },
 
-    validateDataDynamic: ( destiny, dataIn = 'body' ) => ( req, res, next ) => {
+    validateDataDynamic: ( destiny, validator, dataIn = 'body' ) => ( req, res, next ) => {
 
-        const { error, value } = userValidator[destiny].validate(req[dataIn]);
+        const { error, value } = validator[destiny].validate(req[dataIn]);
 
         if ( error ) {
             throw new ErrorHandler(error.details[0].message, errorsEnumCode.BAD_REQUEST);

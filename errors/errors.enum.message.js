@@ -4,4 +4,5 @@ module.exports = {
     EMAIL_EXIST: 'Email already exist',
     WRONG_SOMETHING: 'Something wrong!',
     INVALID_TOKEN: 'Invalid token',
+    WRONG_TEMPLATE: 'wrong template',
 };

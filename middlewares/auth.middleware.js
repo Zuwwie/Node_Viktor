@@ -44,35 +44,6 @@ module.exports = {
             next(e);
         }
     },
-// todo dell anr replace to validateDataDynamic
-    userAuthValidMiddleware: ( params ) => ( req, res, next ) => {
-        try {
-            const dateToValid = req.body;
-            let validator;
-
-            switch (params) {
-                case 'password':
-                    validator = 'passwordValidator';
-                    break;
-                case 'email':
-                    validator = 'emailValidator';
-                    break;
-                default:
-                    throw new ErrorHandler(errorsEnumMessage.WRONG_SOMETHING, 500);
-            }
-
-            const { error, value } = authValidator[validator].validate(dateToValid);
-
-            if ( error ) {
-                throw new ErrorHandler(errorsEnumMessage.WRONG_SOMETHING, errorsEnumCode.BAD_REQUEST);
-            }
-
-            req.body = value;
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
 
     checkToken: ( token_type ) => async ( req, res, next ) => {
         try {
