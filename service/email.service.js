@@ -24,9 +24,7 @@ module.exports = {
     sendMail: async ( userMail, emailAction, context = {} ) => {
 
         const templateInfo = allTemplates[emailAction];
-
-        // console.log(context);
-
+        //todo dell under code to enum
         if ( !templateInfo ) {
             throw new ErrorHandler('wrong template', 444);
         }

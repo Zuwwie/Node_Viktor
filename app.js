@@ -1,15 +1,33 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const startCron = require('./cron');
-const { MONGO_CONNECT_URL, PORT } = require('./configs/config');
+const { MONGO_CONNECT_URL, PORT, ALLOWED_ORIGIN, NODE_ENV } = require('./configs/config');
+const ErrorHandler = require('./errors/ErrorHandler');
 const { userRouter, authRouter } = require('./routes');
+const { checkDefaultData } = require('./util/');
 
 const app = express();
 
 mongoose.connect(MONGO_CONNECT_URL);
+
+app.use(helmet());
+app.use(cors({ origin: _configureCors }));
+app.use(rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+}));
+
+if ( NODE_ENV === 'dev' ) {
+    const morgan = require('morgan');
+
+    app.use(morgan('dev'));
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,5 +43,18 @@ app.use('*', ( error, req, res, next ) => {
 
 app.listen(PORT, () => {
     console.log(`Im here = ${PORT}`);
+    checkDefaultData();
     startCron();
 });
+
+function _configureCors( origin, callback ) {
+    const whiteList = ALLOWED_ORIGIN.split(';');
+    if ( NODE_ENV === 'dev' ) {
+        return callback(null, true);
+    }
+
+    if ( !whiteList.includes(origin) ) {
+        return callback(new ErrorHandler('CORS is not allowed'), false);
+    }
+    return callback(null, true);
+}

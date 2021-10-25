@@ -32,14 +32,14 @@ router.post(
     authMiddleware.checkToken(ACCESS),
     authController.changePasswordSendMail);
 
-router.post(
+router.put(
     '/passwordchangerMail',
     authMiddleware.userAuthValidMiddleware('email'),
     userMiddleware.userEmailSearch(true),
     authController.changePasswordSendMail
 );
 
-router.post(
+router.put(
     '/passwordchanger/:password_token',
     authMiddleware.userAuthValidMiddleware('password'),
     authMiddleware.checkToken(PASSWORD, PASSWORD),

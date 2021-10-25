@@ -4,8 +4,8 @@ const removeOldTokens = require('./old-token-remove.job');
 const { O_Auth, O_Password } = require('../dataBase');
 
 module.exports = () => {
-    // cron.schedule('0 0 * * *', () => {
-        cron.schedule('*/10 * * * * *', () => {
+    cron.schedule('0 0 * * *', () => {
+    //     cron.schedule('*/10 * * * * *', () => {
         console.log('CRON running a task');
         removeOldTokens(O_Auth, 2);
         removeOldTokens(O_Password, 1);
