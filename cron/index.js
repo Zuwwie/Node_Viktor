@@ -8,6 +8,6 @@ module.exports = () => {
         //     cron.schedule('*/10 * * * * *', () => {
         console.log('CRON running a task');
         removeOldTokens(O_Auth, 2).then(); // не дає запушити без then
-        removeOldTokens(O_Password, 1).then();
+        removeOldTokens(O_Password, 1);
     });
 };
