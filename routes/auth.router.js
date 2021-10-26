@@ -33,7 +33,7 @@ router.post(
     authMiddleware.checkToken(ACCESS),
     authController.changePasswordSendMail);
 
-router.put(
+router.post(
     '/passwordchangerMail',
     userMiddleware.validateDataDynamic('emailValidator', authValidator),
     userMiddleware.userEmailSearch(true),

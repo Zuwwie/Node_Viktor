@@ -10,7 +10,6 @@ const { DELETE, WELCOME, UPDATE } = require('../configs/email-actions.enum');
 module.exports = {
     getUsers: async ( req, res, next ) => {
         try {
-            console.log(req.query);
             const users = await userService.gettAllUsers(req.query);
             users.forEach(user => userUtil.userNormalizator(user));
 
@@ -75,7 +74,6 @@ module.exports = {
 
     updateUser: async ( req, res, next ) => {
         try {
-            console.log(req.user);
             const user = req.user;
             const { name } = req.body;
             const { _id } = req.user;
