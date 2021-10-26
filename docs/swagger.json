@@ -198,11 +198,20 @@
             "default": "USER_ID"
           },
           {
-            "name": "name",
-            "in": "formData",
-            "default": "VanyaAdmin",
-            "type": "string",
-            "required": true
+            "name": "user",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": "VanyaAdmin"
+                }
+              }
+            }
           }
         ],
         "responses": {
