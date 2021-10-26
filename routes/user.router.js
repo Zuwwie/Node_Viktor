@@ -16,7 +16,7 @@ router.post(
 router.put(
     '/:user_id',
     userMiddleware.validateDataDynamic('isUserIdValid', userValidator, 'params'),
-    userMiddleware.validateDataDynamic('updateUserValidator'),
+    userMiddleware.validateDataDynamic('updateUserValidator', userValidator),
     authMiddleware.checkToken(ACCESS),
     userController.updateUser);
 

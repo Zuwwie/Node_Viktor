@@ -58,7 +58,10 @@ module.exports = {
                 case tokenTypeEnum.PASSWORD:
                     dataBaseToSearch = O_Password;
                     break;
-                case tokenTypeEnum.REFRESH || tokenTypeEnum.ACCESS:
+                case tokenTypeEnum.REFRESH:
+                    dataBaseToSearch = O_Auth;
+                    break;
+                case tokenTypeEnum.ACCESS:
                     dataBaseToSearch = O_Auth;
                     break;
                 default:

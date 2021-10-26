@@ -51,6 +51,7 @@ module.exports = {
 
     deleteUser: async ( req, res, next ) => {
         try {
+
             const token = req.token;
             const user = req.user;
             const _id = user._id;
@@ -72,6 +73,7 @@ module.exports = {
 
     updateUser: async ( req, res, next ) => {
         try {
+            console.log(req.user);
             const user = req.user;
             const { name } = req.body;
             const { _id } = req.user;

@@ -40,6 +40,7 @@ module.exports = {
 
     validateDataDynamic: ( destiny, validator, dataIn = 'body' ) => ( req, res, next ) => {
 
+        console.log(req.params);
         const { error, value } = validator[destiny].validate(req[dataIn]);
 
         if ( error ) {
