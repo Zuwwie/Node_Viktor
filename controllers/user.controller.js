@@ -1,4 +1,5 @@
 const ErrorHandler = require('../errors/ErrorHandler');
+const userService = require('../service/user.service');
 const { passwordService, emailService } = require('../service/');
 const User = require('../dataBase/User');
 const userUtil = require('../util/user.util');
@@ -9,7 +10,8 @@ const { DELETE, WELCOME, UPDATE } = require('../configs/email-actions.enum');
 module.exports = {
     getUsers: async ( req, res, next ) => {
         try {
-            const users = await User.find().lean();
+            console.log(req.query);
+            const users = await userService.gettAllUsers(req.query);
             users.forEach(user => userUtil.userNormalizator(user));
 
             res.json(users);

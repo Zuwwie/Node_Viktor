@@ -24,6 +24,10 @@ const userSchema = new Schema({
         default: userRoles.USER,
         enum: Object.values(userRoles)
     },
+    age: {
+        type: Number,
+        default: 0
+    }
 }, { timestamps: true });
 userSchema.statics = {
     async createUserWithHashPassword( userObject ) {
