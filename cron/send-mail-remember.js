@@ -8,7 +8,7 @@ dayJs.extend(utc);
 
 module.exports = async () => {
 
-    const time = dayJs.utc().subtract(14, 'day');
+    const time = dayJs.utc().subtract(9, 'day');
 
     const sendUsers = await Remember_Base.find();
 
@@ -16,8 +16,7 @@ module.exports = async () => {
 
         const checkUser = await User.findById(user._id);
 
-        // && time.format('HH') === checkUser.lastIn.getHours().toString()toString
-        if ( checkUser.lastIn < time ) {
+        if ( checkUser.lastIn < time && time.format('HH') === checkUser.lastIn.getHours().toString() ) {
             await emailService.sendMail(checkUser.email, REMEMBER, checkUser);
         }
 

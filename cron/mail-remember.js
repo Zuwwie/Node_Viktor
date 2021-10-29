@@ -6,8 +6,8 @@ dayJs.extend(utc);
 
 module.exports = async () => {
 
-    const lessTime = dayJs.utc().subtract(13, 'day');
-    const grateTime = dayJs.utc().subtract(15, 'day');
+    const lessTime = dayJs.utc().subtract(9, 'day');
+    const grateTime = dayJs.utc().subtract(11, 'day');
 
     const rememberUser = await User.find({
         lastIn: { $lt: lessTime, $gt: grateTime }
