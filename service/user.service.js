@@ -1,7 +1,7 @@
 const { User } = require('../dataBase');
 
 module.exports = {
-    gettAllUsers: (query = {}) => {
+    gettAllUsers: ( query = {} ) => {
         const {
             perPage = 20,
             page = 1,
@@ -13,15 +13,15 @@ module.exports = {
         const findObject = {};
         const ageFilter = {};
 
-        Object.keys(filters).forEach((filterParam) => {
+        Object.keys(filters).forEach(( filterParam ) => {
             switch (filterParam) {
                 case 'name':
-                    findObject.name = { $regex: `^${filters.name}`, $options: 'i' } ;
+                    findObject.name = { $regex: `^${filters.name}`, $options: 'i' };
                     break;
                 case 'role':
                     const rolesArr = filters.role.split(';');
 
-                    findObject.role = { $in: rolesArr } ;
+                    findObject.role = { $in: rolesArr };
                     break;
                 case 'age.gte':
                     Object.assign(ageFilter, { $gte: +filters['age.gte'] });
@@ -32,7 +32,7 @@ module.exports = {
             }
         });
 
-        if (Object.values(ageFilter).length) {
+        if ( Object.values(ageFilter).length ) {
             findObject.age = ageFilter;
         }
 
@@ -43,7 +43,7 @@ module.exports = {
             .lean()
             .sort({ [sortBy]: orderBy })
             .limit(+perPage)
-            .skip((page - 1) * perPage);
+            .skip(( page - 1 ) * perPage);
     }
 };
 
