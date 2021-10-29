@@ -5,4 +5,5 @@ module.exports = {
     DELETE: 'delete',
     UPDATE: 'update',
     CHANGE_PASSWORD: 'change_password',
+    REMEMBER: 'remember',
 };

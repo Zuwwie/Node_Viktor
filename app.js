@@ -1,6 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const rateLimit = require('express-rate-limit');
+const fileUploud = require('express-fileupload');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const swaggerUI = require('swagger-ui-express');
@@ -16,7 +17,9 @@ const swaggerJson = require('./docs/swagger.json');
 
 const app = express();
 
-mongoose.connect(MONGO_CONNECT_URL);
+mongoose.connect(MONGO_CONNECT_URL).then(()=>{
+    console.log('Mongo start');
+});
 
 app.use(helmet());
 app.use(cors({ origin: _configureCors }));
@@ -31,6 +34,7 @@ if ( NODE_ENV === 'dev' ) {
     app.use(morgan('dev'));
 }
 
+app.use(fileUploud({}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

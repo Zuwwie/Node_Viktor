@@ -31,5 +31,9 @@ module.exports = {
             templateName: 'passwordChanger',
             subject: 'pass change'
         },
-
+    [emailActionsEnum.REMEMBER]:
+        {
+            templateName: 'remember',
+            subject: 'we haven\'t seen each other for a long time'
+        },
 };

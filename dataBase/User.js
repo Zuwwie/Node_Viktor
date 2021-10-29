@@ -27,8 +27,14 @@ const userSchema = new Schema({
     age: {
         type: Number,
         default: 0
+    },
+    avatar: {
+        type: String,
+    },
+    lastIn: {
+        type: Date
     }
-}, { timestamps: true });
+}, { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } });
 userSchema.statics = {
     async createUserWithHashPassword( userObject ) {
         const hashedPassword = await passwordService.hash(userObject.password);

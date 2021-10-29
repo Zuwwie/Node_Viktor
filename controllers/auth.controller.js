@@ -6,19 +6,28 @@ const { O_Password } = require('../dataBase');
 const User = require('../dataBase/User');
 const ErrorHandler = require('../errors/ErrorHandler');
 const { errorsEnumMessage, errorsEnumCode } = require('../errors');
+const dayJs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+
+dayJs.extend(utc);
 
 module.exports = {
     login: async ( req, res, next ) => {
         try {
             const user = req.user;
+            const { _id } = req.user;
 
+            if ( !req.token ) {
+                await emailService.sendMail(user.email, LOGIN, user);
+            }
             const tokenPair = jwtService.generateTokenPair();
 
             await O_Auth.create({
                 ...tokenPair, user_id: user._id
             });
+            const data = dayJs.utc().format();
 
-            await emailService.sendMail(user.email, LOGIN, user);
+            await User.updateOne({ _id }, { lastIn: data });
 
             res.json({
                 user,
@@ -28,6 +37,25 @@ module.exports = {
             next(e);
         }
     },
+
+    // refresh: async ( req, res, next ) => {
+    //     try {
+    //         const user = req.user;
+    //
+    //         const tokenPair = jwtService.generateTokenPair();
+    //
+    //         await O_Auth.create({
+    //             ...tokenPair, user_id: user._id
+    //         });
+    //
+    //         res.json({
+    //             user,
+    //             ...tokenPair
+    //         });
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // },
 
     logout: async ( req, res, next ) => {
         try {

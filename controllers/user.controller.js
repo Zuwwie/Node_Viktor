@@ -6,6 +6,7 @@ const userUtil = require('../util/user.util');
 const { errorsEnumCode, errorsEnumMessage } = require('../errors');
 const { O_Auth } = require('../dataBase');
 const { DELETE, WELCOME, UPDATE } = require('../configs/email-actions.enum');
+const { s3Service } = require('../service');
 
 module.exports = {
     getUsers: async ( req, res, next ) => {
@@ -38,7 +39,14 @@ module.exports = {
 
             const hashedPassword = await passwordService.hash(newUser.password);
 
-            const user = await User.create({ ...newUser, password: hashedPassword });
+            let user = await User.create({ ...newUser, password: hashedPassword });
+
+            if ( req.files.avatar ) {
+
+                const uploadInfo = s3Service.uploadImage(req.files.avatar, 'users', user._id.toString());
+
+                user = await User.findByIdAndUpdate(user._id, { avatar: ( await uploadInfo ).Location }, { new: true });
+            }
 
             const utilUser = userUtil.userNormalizator(user.toObject());
 

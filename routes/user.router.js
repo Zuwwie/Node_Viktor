@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const { ACCESS } = require('../configs/token-type.enum');
 const { userController } = require('../controllers');
-const { userMiddleware, authMiddleware } = require('../middlewares');
+const { userMiddleware, authMiddleware, fileMiddleware } = require('../middlewares');
 const { userValidator } = require('../validators/');
 
 router.get('/', userController.getUsers);
@@ -10,6 +10,7 @@ router.get('/', userController.getUsers);
 router.post(
     '/',
     userMiddleware.validateDataDynamic('createUserValidator', userValidator),
+    fileMiddleware.checkUserAvatar,
     userMiddleware.userEmailSearch(false),
     userController.createUser);
 
