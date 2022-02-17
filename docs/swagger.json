@@ -1,0 +1,596 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Victor_NODE",
+        "version": "1.0",
+        "description": "This is Hello Node",
+        "contact": {
+            "email": "nazar.gavronsky.mail@gmail.com",
+            "name": "Nazar"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create user",
+                "operationId": "postUser",
+                "description": "This is how to post user in DB",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "default": "Dimas",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "default": "example@email.com",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "default": "Aadmin1",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User was created",
+                        "schema": {
+                            "$ref": "#/definitions/singleUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Just an error",
+                        "schema": {
+                            "properties": {
+                                "msg": {
+                                    "type": "string",
+                                    "example": "Something went wrong"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get All Users",
+                "operationId": "getAllUsers",
+                "description": "This is how to post user in DB",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/singleUser"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                ],
+                "summary": "Delete User by himself ( use_token )",
+                "operationId": "dellUserHimself",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "default": "ACCESS_TOKEN",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "204": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user by ID",
+                "operationId": "getUserByID",
+                "description": "This is how to get user at DB use property ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "name": "user_id",
+                        "type": "string",
+                        "default": "USER_ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/singleUser"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete User by ID",
+                "operationId": "deleteUserByID",
+                "description": "This is how to delete user at DB use property ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "name": "user_id",
+                        "type": "string",
+                        "default": "USER_ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid ID"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update User Name",
+                "operationId": "updateUserName",
+                "description": "This is how to update user name in DB",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "default": "ACCESS_TOKEN",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "in": "path",
+                        "name": "user_id",
+                        "required": true,
+                        "default": "USER_ID"
+                    },
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "name"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "default": "VanyaAdmin"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/singleUser"
+                        }
+                    },
+                    "204": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "operationId": "login",
+                "description": "Login user at platform",
+                "parameters": [
+                    {
+                        "name": "auth",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "email",
+                                "password"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "default": "orsonlara96@gmail.com"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "default": "Admin1"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/loginUser"
+                        }
+                    },
+                    "204": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout",
+                "operationId": "Logout user at the platform",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "default": "ACCESS_TOKEN",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "204": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    }
+                }
+            }
+        },
+        "/auth/logoutAll": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "LogoutAll",
+                "operationId": "Logout all user at the platform",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "default": "ACCESS_TOKEN",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "204": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Refresh invalid token",
+                "operationId": "refreshToken",
+                "description": "Refresh access token to user whose access token invalid use refresh token ",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "default": "ACCESS_TOKEN",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/loginUser"
+                        }
+                    },
+                    "204": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    }
+                }
+            }
+        },
+        "/auth/passwordchanger": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Change password login user",
+                "operationId": "changePassword",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "default": "ACCESS_TOKEN",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "204": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    }
+                }
+            }
+        },
+        "/auth/passwordchangerMail": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Change user password for email. Send email",
+                "operationId": "passwordChangeByMail",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "auth",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "default": "orsonlara96@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/singleUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/auth/passwordchanger/{password_token}": {
+            "put": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Use mail link to change password",
+                "operationId": "changePasswordLink",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "type": "string",
+                        "name": "password_token",
+                        "required": true,
+                        "default": "PASSWORD_TOKEN"
+                    },
+                    {
+                        "in": "body",
+                        "name": "user_password",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "password"
+                            ],
+                            "properties": {
+                                "password": {
+                                    "type": "string",
+                                    "default": "Admin1"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "singleUser": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "example": "dhsfsufugq3udguysh",
+                    "description": "Mongo DB ID"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nazik"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "admin"
+                },
+                "age": {
+                    "type": "number",
+                    "example": 22
+                }
+            }
+        },
+        "loginUser": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string",
+                            "example": "dhsfsufugq3udguysh",
+                            "description": "Mongo DB ID"
+                        },
+                        "email": {
+                            "type": "string",
+                            "example": "example@gmail.com"
+                        },
+                        "name": {
+                            "type": "string",
+                            "example": "Nazik"
+                        },
+                        "role": {
+                            "type": "string",
+                            "example": "admin"
+                        },
+                        "age": {
+                            "type": "number",
+                            "example": 22
+                        }
+                    }
+                },
+                "access_token": {
+                    "type": "string",
+                    "example": "ACCESS_TOKEN"
+                },
+                "refresh_token": {
+                    "type": "string",
+                    "example": "REFRESH_TOKEN"
+                }
+            }
+        }
+    }
+}
